@@ -38,7 +38,7 @@ export default function HomePage() {
     <PageContainer>
       <Title>Selecione a cidade de destino</Title>
       <Select value={cidadeSelecionada} onChange={handler}>
-        <Option value="">Todas</Option>
+        <Option value="">Escolha uma cidade</Option>
         {listaCidades.map((item) => (
           <Option key={item.id} value={item.id}>
             {item.name}
@@ -49,7 +49,7 @@ export default function HomePage() {
                 {listaPassagens.map((passagens, i) =>
                         <MovieContainer key={i}>
                             <Link to={`/passagens-detalhes/${passagens.id}`}><img src={passagens.img_cia} alt="foto-passagem" /></Link>
-                            <p>{passagens.data} ás {passagens.horario_saida}</p>
+                            <p>Saída: {passagens.data} ás {passagens.horario_saida}</p>
                             <p>R$ {passagens.preco}</p>
                             <p>{passagens.local_origem} à {passagens.local_destino}</p>
                         </MovieContainer>

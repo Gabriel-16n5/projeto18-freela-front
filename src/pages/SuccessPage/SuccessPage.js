@@ -1,31 +1,57 @@
-import { Link } from "react-router-dom"
 import styled from "styled-components"
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link, Params, useNavigate, useParams } from "react-router-dom";
 
-export default function SuccessPage({horário, data ,nomeDoFilme, compradorCpf, compradorNome, lugar}) {
+export default function SuccessPage() {
+    const sessão = useParams();
+    const navegate = useNavigate();
+    const [listaCidades, setListaCidades] = useState([1]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const wait = async () => {
+          setIsLoading(true);
+    
+          try {
+            const promise = axios.get(`http://localhost:5000/passagens/${sessão.id}`); 
+            promise.then((ok) => { setListaCidades(ok.data) });
+            
+            setIsLoading(false);
+          } catch (erro) {
+            console.error(erro);
+            setIsLoading(false);
+          }
+        };
+    
+        wait();
+      }, []);
 
     return (
+
         <PageContainer>
-            <h1>Pedido feito <br /> com sucesso!</h1>
+            <h1>Detalhes da passagem para {listaCidades[0].local_destino}</h1>
 
-            <TextContainer data-test="movie-info">
-                <strong><p>Filme e sessão</p></strong>
-                <p>{nomeDoFilme}</p>
-                <p>{data} - {horário}</p>
+            <TextContainer>
+                <h1>Empresa: {listaCidades[0].cia_aerea}</h1>
+                <strong><p>{listaCidades[0].data}</p></strong>
+                <p>Local de saída: {listaCidades[0].local_origem}</p>
+                <p>Horário da saída: {listaCidades[0].horario_saida}</p>
             </TextContainer>
 
-            <TextContainer data-test="seats-info" >
-                <strong><p>Ingressos</p></strong>
+            <TextContainer >
+                <strong><p>Preço:</p></strong>
 
-                {lugar.map((l, i) => <p key={i}>Assento {l}</p>)}
+                <p>R$ {listaCidades[0].preco}</p>
 
             </TextContainer>
 
-            <TextContainer data-test="client-info">
-                <strong><p>Comprador</p></strong>
-                <p >{`Nome: ${compradorNome}`} <br/> {`CPF: ${compradorCpf}`}</p>
+            <TextContainer >
+                <strong><p>Destino:</p></strong> <p >{listaCidades[0].local_destino} - previsão de chegada: {listaCidades[0].horario_chegada}</p>
             </TextContainer>
 
-            <Link to="/"><button data-test="go-home-btn" >Voltar para Home</button></Link>
+            <Link to="/"><button style={{backgroundColor:"green"}} >Concluir Compra!</button></Link>
+            <Link to="/"><button  >Voltar para Home</button></Link>
         </PageContainer>
     )
 }
