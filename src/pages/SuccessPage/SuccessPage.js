@@ -12,21 +12,26 @@ export default function SuccessPage() {
     useEffect(() => {
         const wait = async () => {
           setIsLoading(true);
-    
           try {
-            const promise = axios.get(`http://localhost:5000/passagens/${sessão.id}`); 
+            const promise = axios.get(`https://freela-cxlk.onrender.com/passagens/${sessão.id}`); 
             promise.then((ok) => { setListaCidades(ok.data) });
-            
             setIsLoading(false);
+            
           } catch (erro) {
             console.error(erro);
             setIsLoading(false);
           }
+          
         };
-    
         wait();
+        
       }, []);
 
+       if (listaCidades === 1){
+        console.log("tempo perdido mano")
+        return <p>carregando</p>
+    }
+    else{
     return (
 
         <PageContainer>
@@ -54,6 +59,7 @@ export default function SuccessPage() {
             <Link to="/"><button  >Voltar para Home</button></Link>
         </PageContainer>
     )
+}
 }
 
 const PageContainer = styled.div`

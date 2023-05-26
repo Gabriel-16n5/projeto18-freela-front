@@ -11,7 +11,7 @@ export default function HomePage() {
 
     useEffect(() => {
         try{
-            const promise = axios.get("http://localhost:5000/cidades"); 
+            const promise = axios.get("https://freela-cxlk.onrender.com/cidades"); 
             promise.then((ok) => { setListaCidades(ok.data) });
             
         } catch (erro) {
@@ -26,7 +26,7 @@ export default function HomePage() {
         setCidadeSelecionada(event.target.value);
         console.log(event.target.value)
         try{
-          const promise = axios.get(`http://localhost:5000/passagens/${event.target.value}`); 
+          const promise = axios.get(`https://freela-cxlk.onrender.com/passagens/${event.target.value}`); 
           promise.then((ok) => { setListaPassagens(ok.data) });
           
       } catch (erro) {
