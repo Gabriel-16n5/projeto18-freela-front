@@ -45,7 +45,7 @@ export default function HomePage() {
           console.log(erro);
       }
         };
-    all()
+        all()
     return (
     <PageContainer>
       <Title>Selecione a cidade da Hospedagem</Title>
@@ -63,6 +63,7 @@ export default function HomePage() {
                             <Link to={`/hospedagem-detalhes/${passagens.id}`}><img src={passagens.img_hotel} alt="foto-hospedagem" /></Link>
                             <p>{passagens.nome_hotel}</p>
                             <p>R$ {passagens.diaria}</p>
+                            <p>{listaCidades[[passagens.cidades_id]-1].name} - SP</p>
                         </MovieContainer>
                 )}
         </ListContainer>
