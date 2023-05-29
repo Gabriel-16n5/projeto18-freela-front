@@ -9,16 +9,26 @@ export default function HomePage() {
     const [cidadeSelecionada, setCidadeSelecionada] = useState('');
     const [listaPassagens, setListaPassagens] = useState([]);
 
+   async function all() {
+    if(listaPassagens.length === 0){
+      console.log("dentro")
+      try{
+        const  promise = axios.get(`https://freela-cxlk.onrender.com/passagens`);
+        promise.then((ok) => { setListaPassagens(ok.data) });
+   } catch (erro) {
+      return console.log(erro);
+   }
+    }
+    }
+
     useEffect(() => {
         try{
             const promise = axios.get("https://freela-cxlk.onrender.com/cidades"); 
             promise.then((ok) => { setListaCidades(ok.data) });
             
         } catch (erro) {
-            console.log(erro);
+            return console.log(erro);
         }
-
-
 
     }, []);
 
@@ -30,10 +40,10 @@ export default function HomePage() {
           promise.then((ok) => { setListaPassagens(ok.data) });
           
       } catch (erro) {
-          console.log(erro);
+          return console.log(erro);
       }
-        };
-
+      }
+      all();
     return (
     <PageContainer>
       <Title>Selecione a cidade de destino</Title>

@@ -1,153 +1,198 @@
 import styled from "styled-components"
-import React, { useEffect } from "react";
-import { Link, Params, useParams } from "react-router-dom";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link, Params, useNavigate, useParams } from "react-router-dom";
+import { LoremIpsum } from "lorem-ipsum";
+import { AiFillExclamationCircle } from "react-icons/ai";
 
-
-export default function SessionsPage({setNomeDoFilme, setData, setHorário}) {
-    const [sessões, setSessões] = React.useState(null);
-    const idFilme = useParams();
-    
-    function pegaHorário(time){
-        setHorário(time)
+const lorem = new LoremIpsum({
+    sentencesPerParagraph: {
+      max: 8,
+      min: 4
+    },
+    wordsPerSentence: {
+      max: 16,
+      min: 4
     }
+  });
 
-    function pegaData(data){
-        setData(data)
-    }
+const lor = lorem.generateSentences(3);
+
+export default function SuccessPage() {
+    const sessão = useParams();
+    const navegate = useNavigate();
+    const [listaCidades, setListaCidades] = useState([1]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        const wait = async () => {
+          setIsLoading(true);
+          try {
+            const promise = axios.get(`https://freela-cxlk.onrender.com/hospedagem/${sessão.id}`); 
+            promise.then((ok) => { setListaCidades(ok.data) });
+            setIsLoading(false);
+            
+          } catch (erro) {
+            console.error(erro);
+            setIsLoading(false);
+          }
+          
+        };
+        wait();
         
-        const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/movies/${idFilme.idFilme}/showtimes`)
-        promise.then((ok) => setSessões(ok.data))
-        setNomeDoFilme([])
-    }, [])
-    
-    if (sessões === null){
+      }, []);
+
+       if (listaCidades === 1){
+        console.log("tempo perdido mano")
         return <p>carregando</p>
     }
     else{
-        setTimeout(setNomeDoFilme(sessões.title), 3000)
+    console.log(listaCidades[0].piscina)
     return (
-        <PageContainer>
-            Selecione o horário
-            <div>
-                <SessionContainer>
-                {sessões.days.map((disponível, i) => 
-                
-                <div key={disponível.id} data-test="movie-day">
-                        <Text key={i}>{disponível.weekday} - {disponível.date} {pegaData(disponível.date)} </Text>
-                        <ButtonsContainer  >
-                        {disponível.showtimes.map((time, i) => <Link onClick={(() => pegaData(disponível.date))} key={i} to={`/assentos/${time.id}`}><button  onClick={(() => pegaHorário(time.name))} data-test="showtime">{time.name}</button></Link> )}
-                        </ButtonsContainer>
-                 </div>
-
-                )}
-                </SessionContainer>
-                
-            </div>
-
-            <FooterContainer data-test="footer">
-                <div>
-                    <img src={sessões.posterURL} alt={sessões.title} />
-                </div>
-                <div>
-                    <p>{sessões.title}</p>
-                </div>
-            </FooterContainer>
-
-        </PageContainer>
-        )
         
-    }
+        <PageContainer>
+            <h1>{listaCidades[0].nome_hotel}</h1>
+
+            <ListContainer>
+                        <MovieContainer>
+                            {/* colocar aqui o array de imagens do banco */}
+                            <img src={listaCidades[0].img_hotel} alt="foto-hospedagem" />
+                            <img src={listaCidades[0].img_hotel} alt="foto-hospedagem" />
+                            <img src={listaCidades[0].img_hotel} alt="foto-hospedagem" />
+                            <img src={listaCidades[0].img_hotel} alt="foto-hospedagem" />
+                        </MovieContainer>
+                
+            </ListContainer>
+            <TextContainer>
+                <Caracteristicas>
+                <h1>Caracteristicas:</h1>
+                <p>Local: - <Link to="/">{listaCidades[0].nome_hotel}</Link></p>
+                <h2>Preço: {listaCidades[0].diaria}</h2>
+                <p>Descrição: {lor}</p>
+                </Caracteristicas>
+
+                <Caracteristicas>
+                <h1>Comodidades:</h1>
+                <p>Piscina: <AiFillExclamationCircle color={listaCidades[0].piscina === false ? "red" : "green"} /> </p>
+                <p>café da manhã: <AiFillExclamationCircle color={listaCidades[0].cafe === false ? "red" : "green"} /> </p>
+                <p>Ar condicionado: <AiFillExclamationCircle color={listaCidades[0].ar_condicionado === false ? "red" : "green"} /></p>
+                <p>Quantidade de camas: {listaCidades[0].qtd_camas}</p> 
+                </Caracteristicas>
+
+            </TextContainer>
+
+            <Link to="/"><button style={{backgroundColor:"green"}} >Concluir Compra!</button></Link>
+            <Link to="/"><button style={{backgroundColor:"gray"}} >Voltar para Home</button></Link>
+        </PageContainer>
+    )
 }
-const Text = styled.p`
-    width: 261px;
-    height: 35px;
-    left: 24px;
-    top: 170px;
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 23px;
-    display: flex;
-    justify-content: flex-start;
-    margin-right: 20px;
-    align-items: center;
-    letter-spacing: 0.02em;
-    color: #293845;
-`
+}
 
 const PageContainer = styled.div`
     display: flex;
     flex-direction: column;
+    align-items: center;
     font-family: 'Roboto';
     font-size: 24px;
-    text-align: center;
     color: #293845;
-    margin-top: 30px;
+    margin: 30px 20px;
     padding-bottom: 120px;
     padding-top: 70px;
-    div {
+    a {
+    }
+    button {
         margin-top: 20px;
     }
+    h1 {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 800;
+        font-size: 44px;
+        line-height: 28px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #247A6B;
+        margin-bottom: 20px;
+    }
 `
-const SessionContainer = styled.div`
+const TextContainer = styled.div`
+display: flex;
+margin-left: 90px;
+margin-top: 30px;
+width: 85%;;
+height: 350px;
+`
+
+const MovieContainer = styled.div`
+    width: 250px;
+    height: 200px;
+    display: flex;
+    margin: 25px;
+    img {
+        width: 250px;
+        height: 200px;
+        margin-right: 15px;
+        box-shadow: 0px 2px 4px 2px #0000001A;
+        border-radius: 3px;
+    }
+    p{
+        margin-top: 8px;
+        font-size: 14px;
+    }
+`
+
+const ListContainer = styled.div`
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    padding: 10px;
+    background-color: lightgray;
+    
+`
+
+const Caracteristicas = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    font-family: 'Roboto';
-    font-size: 20px;
-    color: #293845;
-    padding: 0 20px;
-`
-const ButtonsContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    margin: 20px 0;
-    button {
-        margin-right: 20px;
-    }
-    a {
-        text-decoration: none;
-    }
-`
-const FooterContainer = styled.div`
-    width: 100%;
-    height: 120px;
-    background-color: #C3CFD9;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    font-size: 20px;
-    position: fixed;
-    bottom: 0;
-
-    div:nth-child(1) {
-        box-shadow: 0px 2px 4px 2px #0000001A;
-        border-radius: 3px;
+    background-color: whitesmoke;
+    width: 450px;
+    height: 250px;
+    margin-right:50px;
+    h1 {
+        margin-bottom: 5px;
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 800;
+        font-size: 14px;
+        line-height: 28px;
         display: flex;
         align-items: center;
-        justify-content: center;
-        background-color: white;
-        margin: 12px;
-        img {
-            width: 50px;
-            height: 70px;
-            padding: 8px;
-        }
+        text-align: center;
+        color: #247A6B;
     }
-
-    div:nth-child(2) {
+    h2 {
+        margin-bottom: 5px;
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 800;
+        font-size: 24px;
+        line-height: 28px;
         display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        p {
-            text-align: left;
-            &:nth-child(2) {
-                margin-top: 10px;
-            }
-        }
+        align-items: center;
+        text-align: center;
+        color: #247A6B;
+    }
+    p {
+        margin-bottom: 5px;
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 300;
+        font-size: 14px;
+        line-height: 28px;
+        display: flex;
+        align-items: center;
+        color: black;
     }
 `

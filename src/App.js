@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import HomePage from "./pages/HomePage/HomePage"
 import SeatsPage from "./pages/SeatsPage/SeatsPage"
-// import SessionsPage from "./pages/SessionsPage/SessionsPage"
+import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
 import { Route, Routes, BrowserRouter, Link } from "react-router-dom"
 import React from "react"
@@ -18,7 +18,7 @@ export default function App() {
            <NavContainer><Link to="/">Agência de viagens</Link></NavContainer>
            <Routes>
             <Route path="/" element={<HomePage />} />
-            {/* <Route path="/sessoes/:idFilme" element={<SessionsPage setNomeDoFilme={setNomeDoFilme} setData={setData} setHorário={setHorário} />} /> */}
+            <Route path="/hospedagem-detalhes/:id" element={<SessionsPage />} />
             <Route path="/hospedagem" element={<SeatsPage />} />
             <Route path="/passagens-detalhes/:id" element={<SuccessPage/>} />
            </Routes>
