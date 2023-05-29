@@ -4,14 +4,13 @@ import { Link } from "react-router-dom"
 import styled from "styled-components"
 import React from "react"
 
-export default function HomePage() {
+export default function HospedagemPage() {
     const [listaCidades, setListaCidades] = useState([]);
     const [cidadeSelecionada, setCidadeSelecionada] = useState('');
     const [listaPassagens, setListaPassagens] = useState([]);
 
     async function all() {
         if(listaPassagens.length === 0){
-          console.log("dentro")
           try{
             const  promise = axios.get(`https://freela-cxlk.onrender.com/hospedagem`);
             promise.then((ok) => { setListaPassagens(ok.data) });
@@ -36,7 +35,6 @@ export default function HomePage() {
 
     const handler = (event) => {
         setCidadeSelecionada(event.target.value);
-        console.log(event.target.value)
         try{
           const promise = axios.get(`https://freela-cxlk.onrender.com/hospedagem/${event.target.value}`); 
           promise.then((ok) => { setListaPassagens(ok.data) });
@@ -45,6 +43,7 @@ export default function HomePage() {
           console.log(erro);
       }
         };
+        setTimeout(all, 1000)
     return (
     <PageContainer>
       <Title>Selecione a cidade da Hospedagem</Title>

@@ -1,26 +1,20 @@
 import styled from "styled-components"
 import HomePage from "./pages/HomePage/HomePage"
-import SeatsPage from "./pages/SeatsPage/SeatsPage"
-import SessionsPage from "./pages/SessionsPage/SessionsPage"
-import SuccessPage from "./pages/SuccessPage/SuccessPage"
+import HospedagemPage from "./pages/HospedagemPage/HospedagemPage"
+import HospedagemSuccessPage from "./pages/HospedagemSuccessPage/HospedagemSuccessPage"
+import PassagemSuccessPage from "./pages/PassagemSuccessPage/PassagemSuccessPage"
 import { Route, Routes, BrowserRouter, Link } from "react-router-dom"
 import React from "react"
 
 export default function App() {
-    // const [nomeDoFilme, setNomeDoFilme] = React.useState([]);
-    // const [data, setData] = React.useState([]);
-    // const [horário, setHorário] = React.useState([]);
-    // const [lugar, setLugar] = React.useState([]);
-    // const [compradorNome, setCompradorNome] = React.useState([]);
-    // const [compradorCpf, setCompradorCpf] = React.useState([]);
     return (
         <BrowserRouter>
            <NavContainer><Link to="/">Agência de viagens</Link></NavContainer>
            <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/hospedagem-detalhes/:id" element={<SessionsPage />} />
-            <Route path="/hospedagem" element={<SeatsPage />} />
-            <Route path="/passagens-detalhes/:id" element={<SuccessPage/>} />
+            <Route path="/hospedagem-detalhes/:id" element={<HospedagemSuccessPage />} />
+            <Route path="/hospedagem" element={<HospedagemPage />} />
+            <Route path="/passagens-detalhes/:id" element={<PassagemSuccessPage/>} />
            </Routes>
         </BrowserRouter>
     )

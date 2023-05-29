@@ -1,25 +1,20 @@
 import styled from "styled-components"
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, Params, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export default function SuccessPage() {
     const sessão = useParams();
-    const navegate = useNavigate();
     const [listaCidades, setListaCidades] = useState([1]);
-    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const wait = async () => {
-          setIsLoading(true);
           try {
             const promise = axios.get(`https://freela-cxlk.onrender.com/passagens/${sessão.id}`); 
             promise.then((ok) => { setListaCidades(ok.data) });
-            setIsLoading(false);
             
           } catch (erro) {
             console.error(erro);
-            setIsLoading(false);
           }
           
         };

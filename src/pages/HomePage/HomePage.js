@@ -11,7 +11,6 @@ export default function HomePage() {
 
    async function all() {
     if(listaPassagens.length === 0){
-      console.log("dentro")
       try{
         const  promise = axios.get(`https://freela-cxlk.onrender.com/passagens`);
         promise.then((ok) => { setListaPassagens(ok.data) });
@@ -34,7 +33,6 @@ export default function HomePage() {
 
     const handler = (event) => {
         setCidadeSelecionada(event.target.value);
-        console.log(event.target.value)
         try{
           const promise = axios.get(`https://freela-cxlk.onrender.com/passagens/${event.target.value}`); 
           promise.then((ok) => { setListaPassagens(ok.data) });
