@@ -32,7 +32,7 @@ export default function HomePage() {
 
 
 
-    }, [all()]);
+    }, []);
 
     const handler = (event) => {
         setCidadeSelecionada(event.target.value);
