@@ -55,8 +55,9 @@ export default function SuccessPage() {
                 <strong><p>Destino:</p></strong> <p >{listaCidades[0].local_destino} - previsão de chegada: {listaCidades[0].horario_chegada}</p>
             </TextContainer>
 
-            <Link to="/"><button style={{backgroundColor:"green"}} >Concluir Compra!</button></Link>
-            <Link to="/"><button  >Voltar para Home</button></Link>
+            <Link to= "/hospedagem" ><button style={{backgroundColor:"green"}} >Incluir Hospedagem!!</button></Link>
+            <Link to="/"><button style={{backgroundColor:"lightgreen"}} >Concluir Compra!</button></Link>
+            <Link to="/"><button style={{backgroundColor:"gray"}} >Voltar para Home</button></Link>
         </PageContainer>
     )
 }
@@ -76,7 +77,7 @@ const PageContainer = styled.div`
         text-decoration: none;
     }
     button {
-        margin-top: 50px;
+        margin-top: 20px;
     }
     h1 {
         font-family: 'Roboto';
